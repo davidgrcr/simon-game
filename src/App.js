@@ -6,16 +6,9 @@ import ButtonLink from "./components/ButtonLink/ButtonLink";
 import SimonButtonGroup from "./components/SimonButtonGroup/SimonButtonGroup";
 import { basicsColor, defaultValues } from "./CONSTANTS";
 import delay from "./utils";
-import { ConfigurationContext } from "./configuration-context";
 
 export default function App() {
   const [configuration, setConfiguration] = useState(defaultValues);
-
-  const [showDrawer, setShowDrawer] = useState(false);
-
-  const toggleCheckoutDrawer = () => {
-    setShowDrawer(!showDrawer);
-  };
 
   useEffect(() => {
     if (configuration.isOn) {
@@ -25,7 +18,6 @@ export default function App() {
           ...configuration.userColors,
           basicsColor[Math.floor(Math.random() * 4)],
         ],
-        handleSimonButtonClick: handleSimonButtonClick,
       });
     } else {
       setConfiguration({ ...configuration, userColors: [], canPlay: false });
@@ -35,11 +27,29 @@ export default function App() {
   useEffect(() => {
     if (configuration.isOn && configuration.userColors.length) {
       displayColors();
+
     }
   }, [configuration.isOn, configuration.userColors.length]);
 
-  function handleSimonButtonClick(color) {
-      setConfiguration({ ...configuration, flashedColor: color });
+  function addColor(){
+    setConfiguration({
+      ...configuration,
+      userColors: [
+        ...configuration.userColors,
+        basicsColor[Math.floor(Math.random() * 4)],
+      ],
+    });
+  }
+
+  
+
+  function reset() {
+    setConfiguration(defaultValues);
+  }
+
+  function checkCorrectColor(color) {
+    const colorToBe = configuration.colorStack.shift();
+    return color === colorToBe;
   }
 
   function handleClickStart(isOn) {
@@ -49,13 +59,23 @@ export default function App() {
     });
   }
 
-  function flashColor(color) {
-    setConfiguration({ ...configuration, flashedColor: color });
+  async function handleSimonButtonClick(color) {
+    if (configuration.canPlay) {
+      flashColor(color);
+      await delay(2000);
+      flashColor(null);
+      let isCorrectColor = checkCorrectColor(color);
+      if(!configuration.colorStack.length && isCorrectColor) {
+        await delay(500);
+        addColor();
+      } else if(!isCorrectColor){
+        reset();
+      }
+    }
   }
 
-  function test(){
-    console.log("configuration", configuration)
-
+  function flashColor(color) {
+    setConfiguration({ ...configuration, flashedColor: color });
   }
 
   async function displayColors() {
@@ -69,15 +89,17 @@ export default function App() {
     setConfiguration({
       ...configuration,
       canPlay: true,
+      colorStack: [...configuration.userColors]
     });
   }
 
   return (
     <div className="App">
-      <CurrentScore isOn={configuration.isOn} />
-      <ConfigurationContext.Provider value={configuration}>
-        <SimonButtonGroup test={test}/>
-      </ConfigurationContext.Provider>
+      <CurrentScore currentScore={configuration.userColors.length} />
+      <SimonButtonGroup
+        handleOnClick={handleSimonButtonClick}
+        flashedColor={configuration.flashedColor}
+      />
       <ButtonLink
         handleClickStart={handleClickStart}
         isOn={configuration.isOn}

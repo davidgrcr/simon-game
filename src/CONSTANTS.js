@@ -5,6 +5,6 @@ const defaultValues = {
   canPlay: false,
   userColors: [],
   flashedColor: '',
-  handleSimonButtonClick: ()=>{}
+  colorStack:[]
 };
 export { basicsColor, defaultValues };
