@@ -5,6 +5,7 @@ const defaultValues = {
   canPlay: false,
   userColors: [],
   flashedColor: '',
-  colorStack:[]
+  colorStack:[],
+  isReseting: false
 };
 export { basicsColor, defaultValues };

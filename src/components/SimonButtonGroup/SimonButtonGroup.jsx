@@ -5,9 +5,10 @@ import "./SimonButtonGroup.scss";
 import { basicsColor } from "./../../CONSTANTS.js";
 
 export default function SimonButtonGroup(props) {
-  const { handleOnClick = () => {}, flashedColor = "" } = props;
+  const { handleOnClick = () => {}, flashedColor = "", isReseting = false } = props;
+
   return (
-    <div className="simonButtonGroup">
+    <div className={"simonButtonGroup" + (isReseting ? " reset" : "")}>
       {basicsColor.map((color, i) => {
         return (
           <SimonButton

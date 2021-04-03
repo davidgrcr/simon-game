@@ -20,18 +20,17 @@ export default function App() {
         ],
       });
     } else {
-      setConfiguration({ ...configuration, userColors: [], canPlay: false });
+      reset();
     }
   }, [configuration.isOn]);
 
   useEffect(() => {
     if (configuration.isOn && configuration.userColors.length) {
       displayColors();
-
     }
   }, [configuration.isOn, configuration.userColors.length]);
 
-  function addColor(){
+  function addColor() {
     setConfiguration({
       ...configuration,
       userColors: [
@@ -41,9 +40,15 @@ export default function App() {
     });
   }
 
-  
+  async function reset(withShake = false) {
+    if (withShake) {
+      setConfiguration({
+        ...configuration,
+        isReseting: true,
+      });
+      await delay(1000);
+    }
 
-  function reset() {
     setConfiguration(defaultValues);
   }
 
@@ -65,11 +70,11 @@ export default function App() {
       await delay(2000);
       flashColor(null);
       let isCorrectColor = checkCorrectColor(color);
-      if(!configuration.colorStack.length && isCorrectColor) {
+      if (!configuration.colorStack.length && isCorrectColor) {
         await delay(500);
         addColor();
-      } else if(!isCorrectColor){
-        reset();
+      } else if (!isCorrectColor) {
+        reset(true);
       }
     }
   }
@@ -89,7 +94,7 @@ export default function App() {
     setConfiguration({
       ...configuration,
       canPlay: true,
-      colorStack: [...configuration.userColors]
+      colorStack: [...configuration.userColors],
     });
   }
 
@@ -99,6 +104,7 @@ export default function App() {
       <SimonButtonGroup
         handleOnClick={handleSimonButtonClick}
         flashedColor={configuration.flashedColor}
+        isReseting={configuration.isReseting}
       />
       <ButtonLink
         handleClickStart={handleClickStart}
@@ -107,10 +113,3 @@ export default function App() {
     </div>
   );
 }
-
-/**
- * Funcio de quan es clica a un color
- * copiar l'array de color
- * crear la manera de incrementar quan l'usuari ho ha fet be
- * no permetre que cliqui en un color si encara no sha acabat de mostrar l'ordre
- */
