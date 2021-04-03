@@ -1,0 +1,35 @@
+
+
+.buttonLink{
+    box-shadow: 0.3rem 0.3rem #33323c;
+    font-family: 'Francois One', sans-serif;
+    font-size: 1.4rem;
+    -webkit-letter-spacing: .1em;
+    -moz-letter-spacing: .1em;
+    -ms-letter-spacing: .1em;
+    letter-spacing: .1em;
+    max-width: 90%;
+    -webkit-text-align: center;
+    text-align: center;
+    min-width: 8rem;
+    background-color: #393843;
+    border: .25rem solid #b0afb4;
+    color: #fff;
+    display: inline-block;
+    height: 100%;
+    line-height: 2rem;
+    padding: .5rem;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    -webkit-transition: border-color .1s .4s, background-color .4s;
+    transition: border-color .1s .4s, background-color .4s;
+    
+
+    &:hover{
+            background-color: #ece02f;
+            border-color: #ece02f;
+            color: #393843;
+            -webkit-transition: border-color .1s, background-color .4s .1s;
+            transition: border-color .1s, background-color .4s .1s;
+    }
+}
