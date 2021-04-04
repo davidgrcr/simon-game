@@ -10,7 +10,7 @@ $shadow: 0px 0px 16px 12px #ccc;
 @mixin button-selected {
   position: relative;
   animation-name: button-selected;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-timing-function: ease-out;
 }
 

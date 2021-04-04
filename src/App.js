@@ -66,7 +66,7 @@ export default function App() {
   async function handleSimonButtonClick(color) {
     if (configuration.canPlay) {
       flashColor(color);
-      await delay(2000);
+      await delay(1000);
       flashColor(null);
       let isCorrectColor = checkCorrectColor(color);
       if (!configuration.colorStack.length && isCorrectColor) {
@@ -85,7 +85,7 @@ export default function App() {
   async function displayColors() {
     for (let i = 0; i < configuration.userColors.length; i++) {
       flashColor(configuration.userColors[i]);
-      await delay(2000);
+      await delay(1000);
       flashColor(null);
       await delay(500);
     }
