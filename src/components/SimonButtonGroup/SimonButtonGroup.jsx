@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 
 import SimonButton from "./../SimonButton/SimonButton";
 import "./SimonButtonGroup.scss";

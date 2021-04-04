@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import CurrentScore from "./components/CurrentScore/CurrentScore";
 import ButtonLink from "./components/ButtonLink/ButtonLink";
@@ -57,12 +57,11 @@ export default function App() {
     return color === colorToBe;
   }
 
-  function handleClickStart(isOn) {
-    setConfiguration({
-      ...configuration,
-      isOn: !isOn,
-    });
-  }
+  const handleClickStart = useCallback((isOn) => setConfiguration({
+    ...configuration,
+    isOn: !isOn,
+  }), []);
+
 
   async function handleSimonButtonClick(color) {
     if (configuration.canPlay) {
