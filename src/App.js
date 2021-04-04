@@ -6,6 +6,7 @@ import ButtonLink from "./components/ButtonLink/ButtonLink";
 import SimonButtonGroup from "./components/SimonButtonGroup/SimonButtonGroup";
 import { basicsColor, defaultValues } from "./CONSTANTS";
 import delay from "./utils";
+import { soundButton, soundError } from "./audio";
 
 export default function App() {
   const [configuration, setConfiguration] = useState(defaultValues);
@@ -57,22 +58,30 @@ export default function App() {
     return color === colorToBe;
   }
 
-  const handleClickStart = useCallback((isOn) => setConfiguration({
-    ...configuration,
-    isOn: !isOn,
-  }), []);
-
+  const handleClickStart = useCallback(
+    (isOn) =>
+      setConfiguration({
+        ...configuration,
+        isOn: !isOn,
+      }),
+    []
+  );
 
   async function handleSimonButtonClick(color) {
     if (configuration.canPlay) {
+      let isCorrectColor = checkCorrectColor(color);
+      if(isCorrectColor) soundButton(color)
+      
       flashColor(color);
       await delay(1000);
       flashColor(null);
-      let isCorrectColor = checkCorrectColor(color);
+      
+
       if (!configuration.colorStack.length && isCorrectColor) {
         await delay(500);
         addColor();
       } else if (!isCorrectColor) {
+        soundError();
         reset(true);
       }
     }
@@ -85,6 +94,7 @@ export default function App() {
   async function displayColors() {
     for (let i = 0; i < configuration.userColors.length; i++) {
       flashColor(configuration.userColors[i]);
+      soundButton(configuration.userColors[i])
       await delay(1000);
       flashColor(null);
       await delay(500);
